@@ -12,8 +12,6 @@
 #include "caffe/util/math_functions.hpp"
 #include "caffe/util/rng.hpp"
 
-#define LABEL_SIZE (74 * 55)
-
 namespace caffe {
 
 template <typename Dtype>
@@ -132,9 +130,9 @@ void DataLayer<Dtype>::DataLayerSetUp(const vector<Blob<Dtype>*>& bottom,
       << (*top)[0]->width();
   // label
   if (this->output_labels_) {
-    (*top)[1]->Reshape(this->layer_param_.data_param().batch_size(), LABEL_SIZE, 1, 1);
+    (*top)[1]->Reshape(this->layer_param_.data_param().batch_size(), datum.label_size(), 1, 1);
     this->prefetch_label_.Reshape(this->layer_param_.data_param().batch_size(),
-        LABEL_SIZE, 1, 1);
+        datum.label_size(), 1, 1);
   }
   // datum size
   this->datum_channels_ = datum.channels();
@@ -177,8 +175,8 @@ void DataLayer<Dtype>::InternalThreadEntry() {
     this->data_transformer_.Transform(item_id, datum, this->mean_, top_data);
 
     if (this->output_labels_) {
-        for (int i = 0; i < LABEL_SIZE; i++)
-          top_label[item_id * LABEL_SIZE + i] = datum.label().Get(i);
+        for (int i = 0; i < datum.label_size(); i++)
+          top_label[item_id * datum.label_size() + i] = datum.label().Get(i);
     }
 
     // go to the next iter
