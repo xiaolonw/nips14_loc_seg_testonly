@@ -13,10 +13,10 @@ using std::max;
 namespace caffe {
 
 template<typename Dtype>
-void SigmoidWithLossLayer<Dtype>::SetUp(const vector<Blob<Dtype>*>& bottom,
+void SigmoidWithLossLayer<Dtype>::LayerSetUp(const vector<Blob<Dtype>*>& bottom,
 		vector<Blob<Dtype>*>* top) {
 	CHECK_EQ(bottom.size(), 2)<< "SigmoidLoss Layer takes a single blob as input.";
-	CHECK_EQ(top->size(), 0) << "SigmoidLoss Layer takes no blob as output.";
+	//CHECK_EQ(top->size(), 0) << "SigmoidLoss Layer takes no blob as output.";
 	sigmoid_bottom_vec_.clear();
 	sigmoid_bottom_vec_.push_back(bottom[0]);
 	sigmoid_top_vec_.push_back(&prob_);

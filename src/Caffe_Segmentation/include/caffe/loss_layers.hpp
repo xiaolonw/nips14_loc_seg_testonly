@@ -667,7 +667,7 @@ class SigmoidWithLossLayer : public LossLayer<Dtype> {
  public:
   explicit SigmoidWithLossLayer(const LayerParameter& param)
       : LossLayer<Dtype>(param), sigmoid_layer_(new SigmoidLayer<Dtype>(param)) {}
-  virtual void SetUp(const vector<Blob<Dtype>*>& bottom,
+  virtual void LayerSetUp(const vector<Blob<Dtype>*>& bottom,
       vector<Blob<Dtype>*>* top);
 
  protected:
