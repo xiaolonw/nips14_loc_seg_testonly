@@ -28,14 +28,18 @@ using std::string;
 using namespace cv;
 using namespace std;
 
-#define LOC_RES_FILE "/exports/cyclops/work/001_Selfies/002_Segmentation/src/Caffe_Segmentation/results/backpage/ImagesNevada/loc/locResult.txt"
-#define IMGS_DIR "/exports/cyclops/work/003_Backpage/dataset/backpage/corpus"
-#define OUT_DIR "/exports/cyclops/work/001_Selfies/002_Segmentation/src/Caffe_Segmentation/results/backpage/ImagesNevada/crops"
 #define SZ_X 227
 #define SZ_Y 227
 
 int main(int argc, char** argv) {
 	::google::InitGoogleLogging(argv[0]);
+    if (argc != 4) {
+        LOG(ERROR) << "Usage: " << argv[0] << " LOC_RES_FILE IMGS_DIR OUT_DIR";
+        return -1;
+    }
+    char* LOC_RES_FILE = argv[1];
+    char* IMGS_DIR = argv[2];
+    char* OUT_DIR = argv[3];
     string fname;
     float xmin, ymin, xmax, ymax;
     ifstream infile(LOC_RES_FILE);
