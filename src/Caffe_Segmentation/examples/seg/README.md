@@ -13,3 +13,13 @@ $ cd $CAFFEROOT/segscripts
     $ bash test_loc.sh # to run the localization on the images
     $ bash crop_by_loc.sh # to crop the images
     ```
+
+2. Segmentation
+
+    ```bash
+    $ cd ../seg
+    $ bash convert_seg_test.sh
+    $ bash seg_test.sh
+    $ bash gen_results.sh
+    ```
+
