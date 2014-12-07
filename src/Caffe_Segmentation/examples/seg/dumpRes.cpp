@@ -29,12 +29,17 @@ using std::string;
 using namespace cv;
 using namespace std;
 
-#define SEG_RES_FILE "/exports/cyclops/work/001_Selfies/002_Segmentation/src/Caffe_Segmentation/results/backpage/ImagesNevada/segs/segResult.txt"
-#define OUT_DIR "/exports/cyclops/work/001_Selfies/002_Segmentation/src/Caffe_Segmentation/results/backpage/ImagesNevada/segs/imgs"
 #define DIM 55
 
 int main(int argc, char** argv) {
 	::google::InitGoogleLogging(argv[0]);
+    if (argc < 3) {
+        LOG(ERROR) << "Usage: " << argv[0] << " SEG_RES_FILE OUT_DIR";
+        return -1;
+    }
+    char* SEG_RES_FILE = argv[1];
+    char* OUT_DIR = argv[2];
+
     string fname;
     ifstream infile(SEG_RES_FILE);
     if (!infile.is_open()) {

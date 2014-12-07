@@ -1,4 +1,5 @@
 /*
+#define OUT_DIR "/exports/cyclops/work/001_Selfies/002_Segmentation/src/Caffe_Segmentation/results/backpage/ImagesNevada/segs/imgs"
  * createFinalRes.cpp
  *
  *  Created on: Dec 1, 2014
@@ -29,15 +30,19 @@ using std::string;
 using namespace cv;
 using namespace std;
 
-#define LOC_RES_FILE "/exports/cyclops/work/001_Selfies/002_Segmentation/src/Caffe_Segmentation/results/backpage/ImagesNevada/loc/locResult.txt"
-#define SEG_IMG_DIR "/exports/cyclops/work/001_Selfies/002_Segmentation/src/Caffe_Segmentation/results/backpage/ImagesNevada/segs/imgs"
-#define OUT_DIR "/exports/cyclops/work/001_Selfies/002_Segmentation/src/Caffe_Segmentation/results/backpage/ImagesNevada/segs/final"
 #define SZ_X 227
 #define SZ_Y 227
 
 
 int main(int argc, char** argv) {
 	::google::InitGoogleLogging(argv[0]);
+    if (argc < 4) {
+        LOG(ERROR) << "Usage: " << argv[0] << " LOC_RES_FILE SEG_IMG_DIR OUT_DIR";
+        return -1;
+    }
+    char *LOC_RES_FILE = argv[1];
+    char *SEG_IMG_DIR = argv[2];
+    char *OUT_DIR = argv[3];
     string fname;
     float xmin, xmax, ymin, ymax;
     ifstream infile(LOC_RES_FILE);
