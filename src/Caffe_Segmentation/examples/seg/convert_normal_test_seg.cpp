@@ -42,25 +42,18 @@ struct Seg_Anno {
 bool MyReadImageToDatum(const string& filename, const std::vector<int> & label,
     const int height, const int width, Datum* datum)
 {
-	cv::Mat cv_img;
-	if (height > 0 && width > 0)
-	{
-		cv::Mat cv_img_origin = cv::imread(filename, CV_LOAD_IMAGE_COLOR);
-		cv::resize(cv_img_origin, cv_img, cv::Size(height, width));
-	}
-	else
-	{
-		cv_img = cv::imread(filename, CV_LOAD_IMAGE_COLOR);
-	}
-
-	//imshow("pic",cv_img);
-	//waitKey(30);
-
-	if (!cv_img.data)
-	{
+	cv::Mat cv_img_origin = cv::imread(filename, CV_LOAD_IMAGE_COLOR), cv_img;
+	if (!cv_img_origin.data) {
 		LOG(ERROR) << "Could not open or find file " << filename;
 		return false;
+    }
+
+	if (height > 0 && width > 0) {
+		cv::resize(cv_img_origin, cv_img, cv::Size(height, width));
+	} else {
+		cv_img = cv_img_origin;
 	}
+
 	datum->set_channels(3);
 	datum->set_height(cv_img.rows);
 	datum->set_width(cv_img.cols);
@@ -103,10 +96,10 @@ int main(int argc, char** argv) {
 	std::vector<Seg_Anno> annos;
 	std::set<string> fNames;
 	string filename;
-	int prop;
 	int cc = 0;
 	while (infile >> filename)
 	{
+        filename = basename(strdup(filename.c_str()));
 		if (cc % 1000 == 0)
 		LOG(INFO)<<filename;
 		cc ++;
