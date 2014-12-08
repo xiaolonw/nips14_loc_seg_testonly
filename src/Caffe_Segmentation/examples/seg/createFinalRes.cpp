@@ -18,6 +18,7 @@
 #include <set>
 #include <algorithm>
 #include <libgen.h>
+#include <boost/filesystem.hpp>
 
 #include <opencv2/opencv.hpp>
 
@@ -43,6 +44,8 @@ int main(int argc, char** argv) {
     char *LOC_RES_FILE = argv[1];
     char *SEG_IMG_DIR = argv[2];
     char *OUT_DIR = argv[3];
+    boost::filesystem::create_directory(OUT_DIR);
+
     string fname;
     float xmin, xmax, ymin, ymax;
     ifstream infile(LOC_RES_FILE);
@@ -54,19 +57,20 @@ int main(int argc, char** argv) {
     I = Mat(SZ_X, SZ_Y, CV_8UC1);
     while (infile >> fname >> xmin >> ymin >> xmax >> ymax) {
         I.setTo(Scalar(0));
-        char *fbasename = basename(strdup(fname.c_str()));
         xmin = std::max(xmin, (float) 0);
         ymin = std::max(ymin, (float) 0);
         xmax = std::min(xmax, (float) I.cols);
         ymax = std::min(ymax, (float) I.rows);
-        S = imread(string(SEG_IMG_DIR) + "/" + fbasename, CV_LOAD_IMAGE_GRAYSCALE);
+        S = imread(string(SEG_IMG_DIR) + "/" + fname, CV_LOAD_IMAGE_GRAYSCALE);
         if (!S.data) {
-            LOG(ERROR) << "Unable to read image " << string(SEG_IMG_DIR) + fbasename;
+            LOG(ERROR) << "Unable to read image " << string(SEG_IMG_DIR) + "/" + fname;
             continue;
         }
         resize(S, S, Size(xmax - xmin, ymax - ymin));
         S.copyTo(I(Rect(xmin, ymin, xmax - xmin, ymax - ymin)));
-        imwrite(string(OUT_DIR) + "/" + fbasename, I);
+        string fpath = string(OUT_DIR) + "/" + fname;
+        boost::filesystem::create_directory(dirname(strdup(fpath.c_str())));
+        imwrite(fpath, I);
     }
 	return 0;
 }

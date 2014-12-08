@@ -17,6 +17,7 @@
 #include <set>
 #include <algorithm>
 #include <libgen.h>
+#include <boost/filesystem.hpp>
 
 #include <opencv2/opencv.hpp>
 
@@ -39,6 +40,7 @@ int main(int argc, char** argv) {
     }
     char* SEG_RES_FILE = argv[1];
     char* OUT_DIR = argv[2];
+    boost::filesystem::create_directory(OUT_DIR);
 
     string fname;
     ifstream infile(SEG_RES_FILE);
@@ -56,8 +58,10 @@ int main(int argc, char** argv) {
         Mat C2;
         S.convertTo(C2, CV_8UC1);
         equalizeHist(C2, C2);
-        char *fname_char = strdup(fname.c_str());
-        imwrite(string(OUT_DIR) + string("/") + basename(fname_char), C2);
+        string fpath = string(OUT_DIR) + string("/") + fname;
+
+        boost::filesystem::create_directory(dirname(strdup(fpath.c_str())));
+        imwrite(fpath, C2);
     }
 	return 0;
 }
