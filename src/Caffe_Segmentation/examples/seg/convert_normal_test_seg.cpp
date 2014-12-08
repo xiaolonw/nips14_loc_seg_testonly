@@ -99,7 +99,6 @@ int main(int argc, char** argv) {
 	int cc = 0;
 	while (infile >> filename)
 	{
-        filename = basename(strdup(filename.c_str()));
 		if (cc % 1000 == 0)
 		LOG(INFO)<<filename;
 		cc ++;
