@@ -19,7 +19,7 @@ $ cd $CAFFEROOT/segscripts
     ```bash
     $ cd ../seg
     $ bash convert_seg_test.sh
-    $ bash seg_test.sh
+    $ bash test_seg.sh
     $ bash gen_results.sh
     ```
 
