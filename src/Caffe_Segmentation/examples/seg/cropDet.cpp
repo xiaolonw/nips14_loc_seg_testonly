@@ -9,6 +9,7 @@
 #include <leveldb/db.h>
 #include <leveldb/write_batch.h>
 
+#include <cstdio>
 #include <algorithm>
 #include <string>
 #include <iostream>
@@ -16,6 +17,9 @@
 #include <vector>
 #include <set>
 #include <algorithm>
+#include <sys/stat.h> // for mkdir
+#include <libgen.h> // for dirname
+#include <boost/filesystem.hpp>
 
 #include <opencv2/opencv.hpp>
 
@@ -30,6 +34,8 @@ using namespace std;
 
 #define SZ_X 227
 #define SZ_Y 227
+
+int CreateDir(const char*, int);
 
 int main(int argc, char** argv) {
 	::google::InitGoogleLogging(argv[0]);
@@ -55,13 +61,15 @@ int main(int argc, char** argv) {
             LOG(ERROR) << "Unable to read image : " << fpath;
             continue;
         }
-        resize(I, I, Size(SZ_X, SZ_Y)); 
+        resize(I, I, Size(SZ_X, SZ_Y));
         xmin = std::max(xmin, (float) 0);
         ymin = std::max(ymin, (float) 0);
         xmax = std::min(xmax, (float) I.cols);
         ymax = std::min(ymax, (float) I.rows);
         C = I(Rect(xmin, ymin, xmax - xmin, ymax - ymin));
-        imwrite(OUT_DIR + string("/") + fname.substr(string("ImagesNevada/").length()), C);
+        string filename = OUT_DIR + string("/") + fname;
+        boost::filesystem::create_directory(dirname(strdup(filename.c_str())));
+        imwrite(filename, C);
     }
 	return 0;
 }
