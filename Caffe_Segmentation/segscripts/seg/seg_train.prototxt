@@ -1,0 +1,238 @@
+name: "3dup_1fc"
+layers {
+  name: "data_55"
+  type: DATA
+  top: "data_55"
+  top: "label_seg"
+  data_param {
+    source: "/nfs/ladoga_no_backups/users/xiaolonw/oedata/leveldb/seg_train_db"
+    mean_file: "/nfs/ladoga_no_backups/users/xiaolonw/oedata/leveldb/seg_train_db/3d_mean.binaryproto"
+    batch_size: 100
+    crop_size: 55
+    mirror: false
+  }
+}
+layers {
+  name: "conv2_55"
+  type: CONVOLUTION
+  bottom: "data_55"
+  top: "conv2_55"
+  blobs_lr: 1
+  blobs_lr: 2
+  weight_decay: 1
+  weight_decay: 0
+  convolution_param {
+    num_output: 64
+    #pad: 1
+    kernel_size: 5
+    #group: 2
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 1
+    }
+  }
+}
+layers {
+  name: "relu2_55"
+  type: RELU
+  bottom: "conv2_55"
+  top: "conv2_55"
+}
+layers {
+  name: "pool2_55"
+  type: POOLING
+  bottom: "conv2_55"
+  top: "pool2_55"
+  pooling_param {
+    pool: MAX
+    kernel_size: 3
+    stride: 2
+  }
+}
+layers {
+  name: "norm2_55"
+  type: LRN
+  bottom: "pool2_55"
+  top: "norm2_55"
+  lrn_param {
+    local_size: 5
+    alpha: 0.0001
+    beta: 0.75
+  }
+}
+layers {
+  name: "conv3_55"
+  type: CONVOLUTION
+  bottom: "norm2_55"
+  top: "conv3_55"
+  blobs_lr: 1
+  blobs_lr: 2
+  weight_decay: 1
+  weight_decay: 0
+  convolution_param {
+    num_output: 192
+    pad: 1
+    kernel_size: 3
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+layers {
+  name: "relu3_55"
+  type: RELU
+  bottom: "conv3_55"
+  top: "conv3_55"
+}
+
+
+
+layers {
+  name: "pool3_55"
+  type: POOLING
+  bottom: "conv3_55"
+  top: "pool3_55"
+  pooling_param {
+    pool: MAX
+    kernel_size: 3
+    stride: 2
+  }
+}
+layers {
+  name: "norm3_55"
+  type: LRN
+  bottom: "pool3_55"
+  top: "norm3_55"
+  lrn_param {
+    local_size: 5
+    alpha: 0.0001
+    beta: 0.75
+  }
+}
+
+layers {
+  name: "conv4_55"
+  type: CONVOLUTION
+  bottom: "norm3_55"
+  top: "conv4_55"
+  blobs_lr: 1
+  blobs_lr: 2
+  weight_decay: 1
+  weight_decay: 0
+  convolution_param {
+    num_output: 384
+    pad: 1
+    kernel_size: 3
+    group: 2
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 1
+    }
+  }
+}
+layers {
+  name: "relu4_55"
+  type: RELU
+  bottom: "conv4_55"
+  top: "conv4_55"
+}
+layers {
+  name: "conv5_55"
+  type: CONVOLUTION
+  bottom: "conv4_55"
+  top: "conv5_55"
+  blobs_lr: 1
+  blobs_lr: 2
+  weight_decay: 1
+  weight_decay: 0
+  convolution_param {
+    num_output: 256
+    pad: 1
+    kernel_size: 3
+    group: 2
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 1
+    }
+  }
+}
+layers {
+  name: "relu5_55"
+  type: RELU
+  bottom: "conv5_55"
+  top: "conv5_55"
+}
+
+layers {
+  name: "fc7_55"
+  type: INNER_PRODUCT
+  blobs_lr: 1
+  blobs_lr: 2
+  weight_decay: 1
+  weight_decay: 0
+  inner_product_param {
+    num_output: 4096
+    weight_filler {
+      type: "gaussian"
+      std: 0.005
+    }
+    bias_filler {
+      type: "constant"
+      value: 0.1
+    }
+  }
+  bottom: "conv5_55"
+  top: "fc7_55"
+}
+layers {
+  name: "relu7_55"
+  type: RELU
+  bottom: "fc7_55"
+  top: "fc7_55"
+}
+
+
+layers {
+  name: "fc8_seg"
+  type: INNER_PRODUCT
+  bottom: "fc7_55"
+  top: "fc8_seg"
+  blobs_lr: 1
+  blobs_lr: 2
+  weight_decay: 1
+  weight_decay: 0
+  inner_product_param {
+    num_output: 3025
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+layers {
+  name: "loss_seg"
+  type: SIGMOID_LOSS
+  bottom: "fc8_seg"
+  bottom: "label_seg"
+}
