@@ -673,12 +673,12 @@ class SigmoidWithLossLayer : public LossLayer<Dtype> {
  protected:
   void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
       vector<Blob<Dtype>*>* top);
-//  virtual Dtype Forward_gpu(const vector<Blob<Dtype>*>& bottom,
-//      vector<Blob<Dtype>*>* top);
+  virtual void Forward_gpu(const vector<Blob<Dtype>*>& bottom,
+      vector<Blob<Dtype>*>* top);
   void Backward_cpu(const vector<Blob<Dtype>*>& top,
       const vector<bool>& propagate_down, vector<Blob<Dtype>*>* bottom);
-//  virtual void Backward_gpu(const vector<Blob<Dtype>*>& top,
-//     const bool propagate_down, vector<Blob<Dtype>*>* bottom);
+  virtual void Backward_gpu(const vector<Blob<Dtype>*>& top,
+      const vector<bool>& propagate_down, vector<Blob<Dtype>*>* bottom);
 
   shared_ptr<SigmoidLayer<Dtype> > sigmoid_layer_;
   // prob stores the output probability of the layer.
