@@ -67,7 +67,8 @@ int main(int argc, char** argv) {
             continue;
         }
         resize(S, S, Size(xmax - xmin, ymax - ymin));
-        S.copyTo(I(Rect(xmin, ymin, xmax - xmin, ymax - ymin)));
+        Mat extractImage = I(Rect(xmin, ymin, xmax - xmin, ymax - ymin));
+        S.copyTo(extractImage);
         string fpath = string(OUT_DIR) + "/" + fname;
         boost::filesystem::create_directory(dirname(strdup(fpath.c_str())));
         imwrite(fpath, I);
