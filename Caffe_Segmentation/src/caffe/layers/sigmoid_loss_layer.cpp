@@ -81,6 +81,9 @@ void SigmoidWithLossLayer<Dtype>::Backward_cpu(const vector<Blob<Dtype>*>& top,
 }
 
 
+#ifdef CPU_ONLY
+STUB_GPU(SigmoidWithLossLayer);
+#endif
 
 INSTANTIATE_CLASS(SigmoidWithLossLayer);
 

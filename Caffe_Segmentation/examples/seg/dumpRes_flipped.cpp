@@ -30,15 +30,16 @@ using std::string;
 using namespace cv;
 using namespace std;
 
+#define DIM 50
+
 int main(int argc, char** argv) {
 	::google::InitGoogleLogging(argv[0]);
-    if (argc < 4) {
-        LOG(ERROR) << "Usage: " << argv[0] << " SEG_RES_FILE OUT_DIR IMG_DIM";
+    if (argc < 3) {
+        LOG(ERROR) << "Usage: " << argv[0] << " SEG_RES_FILE OUT_DIR";
         return -1;
     }
     char* SEG_RES_FILE = argv[1];
     char* OUT_DIR = argv[2];
-    int DIM = atof(argv[3]);
     boost::filesystem::create_directory(OUT_DIR);
 
     string fname;
@@ -60,6 +61,8 @@ int main(int argc, char** argv) {
         string fpath = string(OUT_DIR) + string("/") + fname;
 
         boost::filesystem::create_directory(dirname(strdup(fpath.c_str())));
+        // because Xiaolong's new model returns the mirrored version of segmentations !!!
+        flip(C2, C2, 1);
         imwrite(fpath, C2);
     }
 	return 0;

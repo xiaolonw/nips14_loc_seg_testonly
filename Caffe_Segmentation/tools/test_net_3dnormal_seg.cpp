@@ -35,8 +35,6 @@ using namespace std;
 using namespace cv;
 using namespace caffe;
 using std::vector;
-#define LABEL_LEN 1
-#define LABEL_SIZE 55
 
 /*int readLeveldb(string &source, string &des)
 {
@@ -178,7 +176,7 @@ int main(int argc, char** argv)
 					fscanf(file,"%d",&lbl);
 				}*/
 			fprintf(resultfile, "%s ", fname);
-			int len = LABEL_SIZE * LABEL_SIZE * LABEL_LEN;
+			int len =  bboxs->channels();
 			for(int j = 0; j < len; j ++)
 			{
 				fprintf(resultfile, "%f ", (float)(bboxs->data_at(i, j, 0, 0)) );
