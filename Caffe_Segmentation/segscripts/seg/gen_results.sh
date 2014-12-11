@@ -1,5 +1,5 @@
 #!/usr/bin/env sh                                                                                                
-GLOG_logtostderr=1  $CAFFEROOT/build/examples/seg/dumpRes.bin  \
+GLOG_logtostderr=1  $CAFFEROOT/build/examples/seg/dumpRes_flipped.bin  \
     $SEGSCRDIR/data/segResult.txt \
     $SEGSCRDIR/data/seg_imgs \
     50

@@ -1,5 +1,8 @@
 mkdir -p models
 cd models
 
-wget https://www.dropbox.com/sh/t851g3hxzgisgit/AABNm6PjYi5rvrr8ADOUufX7a/seg.caffemodel
-wget https://www.dropbox.com/sh/t851g3hxzgisgit/AAAG5OXDbnFmD1cXNWsrxQyFa/loc.caffemodel
+wget /path/to/seg.caffemodel seg.caffemodel
+wget /path/to/loc.caffemodel loc.caffemodel
+wget /path/to/seg_mean.binaryproto seg_mean.binaryproto
+wget /path/to/loc_mean.binaryproto loc_mean.binaryproto
+
