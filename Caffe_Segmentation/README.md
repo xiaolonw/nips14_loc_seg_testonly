@@ -23,3 +23,11 @@ $ bash run_seg.sh ../ # runs the segmentation. The argument is the path to CAFFE
 
 Generates segmentaion of images in `segscripts/data/corpus` into `segscripts/data/final_segmentations`.
 
+Downloads
+----
+
+The models can be downloaded via the scripts from dropbox. If dropbox is blocked in your district, you can try to download from[ Baidu Cloud ](http://pan.baidu.com/s/1sjyk2Wt)
+
+
+
+
