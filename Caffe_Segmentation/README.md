@@ -17,8 +17,8 @@ To run the provided demo
 
 ```bash
 $ cd segscripts
-$ bash get_seg_loc_models.sh
-$ bash run_seg.sh
+$ bash get_seg_loc_models.sh # downloads models from internet
+$ bash run_seg.sh ../ # runs the segmentation. The argument is the path to CAFFE
 ```
 
 Generates segmentaion of images in `segscripts/data/corpus` into `segscripts/data/final_segmentations`.
