@@ -5,9 +5,9 @@ layers {
   top: "data_55"
   top: "label_seg"
   data_param {
-    source: "/exports/cyclops/work/001_Selfies/002_Segmentation/src/Caffe_Segmentation/results/backpage/ImagesNevada/cropped_leveldb"
-    mean_file: "/exports/cyclops/work/001_Selfies/002_Segmentation/src/Caffe_Segmentation/data/seg/3d_mean.binaryproto"
-    batch_size: 100
+    source: "data/seg_leveldb"
+    mean_file: "models/seg_mean.binaryproto"
+    batch_size: 64
     crop_size: 55
     mirror: false
   }
@@ -22,7 +22,7 @@ layers {
   weight_decay: 1
   weight_decay: 0
   convolution_param {
-    num_output: 64
+    num_output: 256
     #pad: 1
     kernel_size: 5
     #group: 2
@@ -74,7 +74,7 @@ layers {
   weight_decay: 1
   weight_decay: 0
   convolution_param {
-    num_output: 192
+    num_output: 384
     pad: 1
     kernel_size: 3
     weight_filler {
@@ -97,20 +97,9 @@ layers {
 
 
 layers {
-  name: "pool3_55"
-  type: POOLING
-  bottom: "conv3_55"
-  top: "pool3_55"
-  pooling_param {
-    pool: MAX
-    kernel_size: 3
-    stride: 2
-  }
-}
-layers {
   name: "norm3_55"
   type: LRN
-  bottom: "pool3_55"
+  bottom: "conv3_55"
   top: "norm3_55"
   lrn_param {
     local_size: 5
@@ -181,45 +170,27 @@ layers {
 }
 
 layers {
-  name: "fc7_55"
-  type: INNER_PRODUCT
-  blobs_lr: 1
-  blobs_lr: 2
-  weight_decay: 1
-  weight_decay: 0
-  inner_product_param {
-    num_output: 4096
-    weight_filler {
-      type: "gaussian"
-      std: 0.005
-    }
-    bias_filler {
-      type: "constant"
-      value: 0.1
-    }
-  }
+  name: "pool5_55"
+  type: POOLING
   bottom: "conv5_55"
-  top: "fc7_55"
+  top: "pool5_55"
+  pooling_param {
+    pool: MAX
+    kernel_size: 3
+    stride: 2
+  }
 }
-layers {
-  name: "relu7_55"
-  type: RELU
-  bottom: "fc7_55"
-  top: "fc7_55"
-}
-
-
 layers {
   name: "fc8_seg"
   type: INNER_PRODUCT
-  bottom: "fc7_55"
+  bottom: "pool5_55"
   top: "fc8_seg"
   blobs_lr: 1
   blobs_lr: 2
   weight_decay: 1
   weight_decay: 0
   inner_product_param {
-    num_output: 3025
+    num_output: 2500
     weight_filler {
       type: "gaussian"
       std: 0.01
@@ -230,12 +201,16 @@ layers {
     }
   }
 }
+
 layers{
   name: "sigmoid_seg"
   type: SIGMOID
   bottom: "fc8_seg"
   top: "fc8_seg"
 }
+
+
+
 layers {
   name: "loss_seg"
   type: SIGMOID_LOSS

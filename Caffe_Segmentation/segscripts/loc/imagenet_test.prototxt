@@ -5,8 +5,8 @@ layers {
   top: "data"
   top: "label"
   data_param {
-    source: "/exports/cyclops/work/003_Backpage/dataset/backpage/leveldb/ImagesNevada"
-    mean_file: "/exports/cyclops/work/001_Selfies/002_Segmentation/src/Caffe_Segmentation/data/ilsvrc12/imagenet_mean.binaryproto"
+    source: "data/loc_leveldb"
+    mean_file: "models/loc_mean.binaryproto"
     batch_size: 100
     crop_size: 227
     mirror: false

@@ -30,16 +30,15 @@ using std::string;
 using namespace cv;
 using namespace std;
 
-#define DIM 55
-
 int main(int argc, char** argv) {
 	::google::InitGoogleLogging(argv[0]);
-    if (argc < 3) {
-        LOG(ERROR) << "Usage: " << argv[0] << " SEG_RES_FILE OUT_DIR";
+    if (argc < 4) {
+        LOG(ERROR) << "Usage: " << argv[0] << " SEG_RES_FILE OUT_DIR IMG_DIM";
         return -1;
     }
     char* SEG_RES_FILE = argv[1];
     char* OUT_DIR = argv[2];
+    int DIM = atof(argv[3]);
     boost::filesystem::create_directory(OUT_DIR);
 
     string fname;

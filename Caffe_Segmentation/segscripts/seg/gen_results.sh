@@ -1,15 +1,11 @@
 #!/usr/bin/env sh                                                                                                
+GLOG_logtostderr=1  $CAFFEROOT/build/examples/seg/dumpRes.bin  \
+    $SEGSCRDIR/data/segResult.txt \
+    $SEGSCRDIR/data/seg_imgs \
+    50
 
-# test_net_seg.bin test_proto pre_train_model label.txt outputfolder [CPU/GPU]
+GLOG_logtostderr=1  $CAFFEROOT/build/examples/seg/createFinalRes.bin  \
+    $SEGSCRDIR/data/locResult.txt \
+    $SEGSCRDIR/data/seg_imgs \
+    $SEGSCRDIR/data/final_segmentations
 
-ROOTFILE=/exports/cyclops/work/001_Selfies/002_Segmentation/src/Caffe_Segmentation
-
-GLOG_logtostderr=1  $ROOTFILE/build/examples/seg/dumpRes.bin  \
-    /exports/cyclops/work/001_Selfies/002_Segmentation/src/Caffe_Segmentation/results/backpage/ImagesNevada/segs/segResult.txt \
-    /exports/cyclops/work/001_Selfies/002_Segmentation/src/Caffe_Segmentation/results/backpage/ImagesNevada/segs/imgs
-
-
-GLOG_logtostderr=1  $ROOTFILE/build/examples/seg/createFinalRes.bin  \
-    /exports/cyclops/work/001_Selfies/002_Segmentation/src/Caffe_Segmentation/results/backpage/ImagesNevada/loc/locResult.txt \
-    /exports/cyclops/work/001_Selfies/002_Segmentation/src/Caffe_Segmentation/results/backpage/ImagesNevada/segs/imgs \
-    /exports/cyclops/work/001_Selfies/002_Segmentation/src/Caffe_Segmentation/results/backpage/ImagesNevada/segs/final

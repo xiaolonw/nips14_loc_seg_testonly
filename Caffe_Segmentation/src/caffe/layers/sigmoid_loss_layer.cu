@@ -23,7 +23,7 @@ void SigmoidWithLossLayer<Dtype>::Forward_gpu(
 template<typename Dtype>
 void SigmoidWithLossLayer<Dtype>::Backward_gpu(const vector<Blob<Dtype>*>& top,
 		const vector<bool>&  propagate_down, vector<Blob<Dtype>*>* bottom) {
-	// TODO(Yangqing): implement the GPU version of sigmoid.
+	// TODO(xiaolonw): implement the GPU version of sigmoid loss
 	Backward_cpu(top, propagate_down, bottom);
 }
 
