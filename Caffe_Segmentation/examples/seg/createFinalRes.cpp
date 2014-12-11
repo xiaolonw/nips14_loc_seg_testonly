@@ -66,7 +66,7 @@ int main(int argc, char** argv) {
             LOG(ERROR) << "Unable to read image " << string(SEG_IMG_DIR) + "/" + fname;
             continue;
         }
-        resize(S, S, Size(xmax - xmin, ymax - ymin));
+	resize(S, S, Size(xmax - xmin, ymax - ymin));
 	Mat extractImage = I(Rect(xmin, ymin, xmax - xmin, ymax - ymin));
         S.copyTo(extractImage);
         string fpath = string(OUT_DIR) + "/" + fname;
