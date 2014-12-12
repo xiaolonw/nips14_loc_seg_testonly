@@ -26,7 +26,7 @@ Generates segmentaion of images in `segscripts/data/corpus` into `segscripts/dat
 Downloads
 ----
 
-The models can be downloaded via the scripts from dropbox. If dropbox is blocked in your district, you can try to download from[ Baidu Cloud ](http://pan.baidu.com/s/1sjyk2Wt)
+The models trained on the training set of [Object Extraction dataset](http://objectextraction.github.io/) are available to be downloaded from dropbox via the script "get_seg_loc_models.sh". If dropbox is blocked in your district, you can try to download from[ Baidu Cloud ](http://pan.baidu.com/s/1sjyk2Wt)
 
 
 
