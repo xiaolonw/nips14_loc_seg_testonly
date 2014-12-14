@@ -6,10 +6,14 @@ layers {
   top: "label_seg"
   data_param {
     source: "data/seg_leveldb"
-    mean_file: "models/seg_mean.binaryproto"
     batch_size: 64
+  }
+  transform_param {
+    mean_file: "models/mean.binaryproto"
     crop_size: 55
     mirror: false
+    is_seg: true
+    loc_result: "data/locResult.txt"
   }
 }
 layers {

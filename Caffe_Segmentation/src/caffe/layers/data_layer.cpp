@@ -51,6 +51,7 @@ void DataLayer<Dtype>::DataLayerSetUp(const vector<Blob<Dtype>*>& bottom,
     db_.reset(db_temp);
     iter_.reset(db_->NewIterator(leveldb::ReadOptions()));
     iter_->SeekToFirst();
+    idx_ = 0;
     }
     break;
   case DataParameter_DB_LMDB:
@@ -82,8 +83,10 @@ void DataLayer<Dtype>::DataLayerSetUp(const vector<Blob<Dtype>*>& bottom,
       switch (this->layer_param_.data_param().backend()) {
       case DataParameter_DB_LEVELDB:
         iter_->Next();
+        idx_++;
         if (!iter_->Valid()) {
           iter_->SeekToFirst();
+          idx_ = 0;
         }
         break;
       case DataParameter_DB_LMDB:
@@ -103,6 +106,7 @@ void DataLayer<Dtype>::DataLayerSetUp(const vector<Blob<Dtype>*>& bottom,
   switch (this->layer_param_.data_param().backend()) {
   case DataParameter_DB_LEVELDB:
     datum.ParseFromString(iter_->value().ToString());
+    //LOG(INFO)<<idx_;
     break;
   case DataParameter_DB_LMDB:
     datum.ParseFromArray(mdb_value_.mv_data, mdb_value_.mv_size);
@@ -160,6 +164,7 @@ void DataLayer<Dtype>::InternalThreadEntry() {
       CHECK(iter_);
       CHECK(iter_->Valid());
       datum.ParseFromString(iter_->value().ToString());
+      //LOG(INFO)<<idx_;
       break;
     case DataParameter_DB_LMDB:
       CHECK_EQ(mdb_cursor_get(mdb_cursor_, &mdb_key_,
@@ -171,8 +176,12 @@ void DataLayer<Dtype>::InternalThreadEntry() {
       LOG(FATAL) << "Unknown database backend";
     }
 
-    // Apply data transformations (mirror, scale, crop...)
-    this->data_transformer_.Transform(item_id, datum, this->mean_, top_data);
+    if (this->layer_param_.transform_param().is_seg()){
+    	this->data_transformer_.Transform(idx_, item_id, datum, this->mean_, top_data);
+    }else{
+      // Apply data transformations (mirror, scale, crop...)
+      this->data_transformer_.Transform(item_id, datum, this->mean_, top_data);
+    }
 
     if (this->output_labels_) {
         for (int i = 0; i < datum.label_size(); i++)
@@ -183,10 +192,12 @@ void DataLayer<Dtype>::InternalThreadEntry() {
     switch (this->layer_param_.data_param().backend()) {
     case DataParameter_DB_LEVELDB:
       iter_->Next();
+      idx_++;
       if (!iter_->Valid()) {
         // We have reached the end. Restart from the first.
         DLOG(INFO) << "Restarting data prefetching from start.";
         iter_->SeekToFirst();
+        idx_ = 0;
       }
       break;
     case DataParameter_DB_LMDB:

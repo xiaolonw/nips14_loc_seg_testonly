@@ -16,6 +16,10 @@ class DataTransformer {
   explicit DataTransformer(const TransformationParameter& param)
     : param_(param) {
     phase_ = Caffe::phase();
+
+    if (param_.is_seg() && param_.has_loc_result()){
+    	SetUpLocResultFromText();
+    }
   }
   virtual ~DataTransformer() {}
 
@@ -37,6 +41,12 @@ class DataTransformer {
    */
   void Transform(const int batch_item_id, const Datum& datum,
                  const Dtype* mean, Dtype* transformed_data);
+
+  void Transform(const int idx, const int batch_item_id, const Datum& datum,
+                   const Dtype* mean, Dtype* transformed_data);
+
+  vector<vector<Dtype> > loc_result_;
+  void SetUpLocResultFromText();
 
  protected:
   virtual unsigned int Rand();

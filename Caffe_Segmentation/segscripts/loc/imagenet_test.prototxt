@@ -6,8 +6,10 @@ layers {
   top: "label"
   data_param {
     source: "data/loc_leveldb"
-    mean_file: "models/loc_mean.binaryproto"
     batch_size: 100
+  }
+  transform_param {
+    mean_file: "models/mean.binaryproto"
     crop_size: 227
     mirror: false
   }

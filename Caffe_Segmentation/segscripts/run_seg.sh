@@ -12,8 +12,8 @@ bash loc/convert_loc_test.sh $SEGSCRDIR/data
 echo 'Running localization'
 bash loc/test_loc.sh
 
-echo 'Cropping based on localization'
-bash loc/crop_by_loc.sh
+#echo 'Cropping based on localization'
+#bash loc/crop_by_loc.sh
 
 echo 'Create leveldb for segmentaion'
 rm -rf $SEGSCRDIR/data/seg_leveldb

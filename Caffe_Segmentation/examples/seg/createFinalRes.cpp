@@ -1,5 +1,5 @@
 /*
-#define OUT_DIR "/exports/cyclops/work/001_Selfies/002_Segmentation/src/Caffe_Segmentation/results/backpage/ImagesNevada/segs/imgs"
+ #define OUT_DIR "/exports/cyclops/work/001_Selfies/002_Segmentation/src/Caffe_Segmentation/results/backpage/ImagesNevada/segs/imgs"
  * createFinalRes.cpp
  *
  *  Created on: Dec 1, 2014
@@ -31,48 +31,58 @@ using std::string;
 using namespace cv;
 using namespace std;
 
-#define SZ_X 227
-#define SZ_Y 227
+#define SZ_X 256
+#define SZ_Y 256
 
+#define OFFSET ((256-227)/2)
 
 int main(int argc, char** argv) {
 	::google::InitGoogleLogging(argv[0]);
-    if (argc < 4) {
-        LOG(ERROR) << "Usage: " << argv[0] << " LOC_RES_FILE SEG_IMG_DIR OUT_DIR";
-        return -1;
-    }
-    char *LOC_RES_FILE = argv[1];
-    char *SEG_IMG_DIR = argv[2];
-    char *OUT_DIR = argv[3];
-    boost::filesystem::create_directory(OUT_DIR);
+	if (argc < 4) {
+		LOG(ERROR)<< "Usage: " << argv[0] << " LOC_RES_FILE SEG_IMG_DIR OUT_DIR";
+		return -1;
+	}
+	char *LOC_RES_FILE = argv[1];
+	char *SEG_IMG_DIR = argv[2];
+	char *OUT_DIR = argv[3];
+	boost::filesystem::create_directory(OUT_DIR);
 
-    string fname;
-    float xmin, xmax, ymin, ymax;
-    ifstream infile(LOC_RES_FILE);
-    if (!infile.is_open()) {
-        LOG(ERROR) << "Unable to open file: " << LOC_RES_FILE;
-        return -1;
-    }
-    Mat I, S;
-    I = Mat(SZ_X, SZ_Y, CV_8UC1);
-    while (infile >> fname >> xmin >> ymin >> xmax >> ymax) {
-        I.setTo(Scalar(0));
-        xmin = std::max(xmin, (float) 0);
-        ymin = std::max(ymin, (float) 0);
-        xmax = std::min(xmax, (float) I.cols);
-        ymax = std::min(ymax, (float) I.rows);
-        S = imread(string(SEG_IMG_DIR) + "/" + fname, CV_LOAD_IMAGE_GRAYSCALE);
-        if (!S.data) {
-            LOG(ERROR) << "Unable to read image " << string(SEG_IMG_DIR) + "/" + fname;
-            continue;
-        }
-        resize(S, S, Size(xmax - xmin, ymax - ymin));
-        Mat extractImage = I(Rect(xmin, ymin, xmax - xmin, ymax - ymin));
-        S.copyTo(extractImage);
-        string fpath = string(OUT_DIR) + "/" + fname;
-        boost::filesystem::create_directory(dirname(strdup(fpath.c_str())));
-        imwrite(fpath, I);
-    }
+	string fname;
+	float xmin, xmax, ymin, ymax;
+	ifstream infile(LOC_RES_FILE);
+	if (!infile.is_open()) {
+		LOG(ERROR)<< "Unable to open file: " << LOC_RES_FILE;
+		return -1;
+	}
+	Mat I, S;
+	I = Mat(SZ_X, SZ_Y, CV_8UC1);
+	while (infile >> fname >> xmin >> ymin >> xmax >> ymax) {
+		I.setTo(0);
+		xmin = std::min(std::max(xmin + OFFSET, (float) 0), (float) SZ_X-1);
+		ymin = std::min(std::max(ymin + OFFSET, (float) 0), (float) SZ_Y-1);
+		xmax = std::min(std::max(xmax + OFFSET, (float) 0), (float) SZ_X-1);
+		ymax = std::min(std::max(ymax + OFFSET, (float) 0), (float) SZ_Y-1);
+		int x1 = xmin;
+		int y1 = ymin;
+		int x2 = xmax;
+		int y2 = ymax;
+		//LOG(ERROR)<<fname<<" "<<x1<<" "<<y1<<" "<<x2<<" "<<y2;
+
+		S = imread(string(SEG_IMG_DIR) + "/" + fname, CV_LOAD_IMAGE_GRAYSCALE);
+		if (!S.data) {
+			LOG(ERROR)<< "Unable to read image " << string(SEG_IMG_DIR) + "/" + fname;
+			continue;
+		}
+		int height = MAX(1, y2 - y1 + 1);
+		int width = MAX(1, x2 - x1 + 1);
+		resize(S, S, Size(width, height));
+
+		Mat extractedImage = I(Rect(x1, y1, width, height));
+		S.copyTo(extractedImage);
+		string fpath = string(OUT_DIR) + "/" + fname;
+		boost::filesystem::create_directory(dirname(strdup(fpath.c_str())));
+		imwrite(fpath, I);
+	}
 	return 0;
 }
 
