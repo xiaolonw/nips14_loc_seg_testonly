@@ -32,8 +32,10 @@ using std::string;
 using namespace cv;
 using namespace std;
 
-#define SZ_X 227
-#define SZ_Y 227
+#define SZ_X 256
+#define SZ_Y 256
+
+#define OFFSET ((256-227)/2)
 
 int CreateDir(const char*, int);
 
@@ -62,14 +64,15 @@ int main(int argc, char** argv) {
             continue;
         }
         resize(I, I, Size(SZ_X, SZ_Y));
-        xmin = std::max(xmin, (float) 0);
-        ymin = std::max(ymin, (float) 0);
-        xmax = std::min(xmax, (float) I.cols);
-        ymax = std::min(ymax, (float) I.rows);
+        xmin = std::min(std::max(xmin + OFFSET, (float) 0), (float) SZ_X-1);
+        ymin = std::min(std::max(ymin + OFFSET, (float) 0), (float) SZ_Y-1);
+        xmax = std::min(std::max(xmax + OFFSET, (float) 0), (float) SZ_X-1);
+        ymax = std::min(std::max(ymax + OFFSET, (float) 0), (float) SZ_Y-1);
         C = I(Rect(xmin, ymin, xmax - xmin, ymax - ymin));
         string filename = OUT_DIR + string("/") + fname;
         boost::filesystem::create_directory(dirname(strdup(filename.c_str())));
         imwrite(filename, C);
+        LOG(ERROR)<<filename<<" "<<xmin<<" "<<ymin<<" "<<xmax<<" "<<ymax;
     }
 	return 0;
 }
