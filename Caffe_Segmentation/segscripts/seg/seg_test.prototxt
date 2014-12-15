@@ -6,7 +6,7 @@ layers {
   top: "label_seg"
   data_param {
     source: "data/seg_leveldb"
-    batch_size: 64
+    batch_size: 2
   }
   transform_param {
     mean_file: "models/mean.binaryproto"

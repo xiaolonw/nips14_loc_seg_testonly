@@ -7,4 +7,5 @@ GLOG_logtostderr=1  $CAFFEROOT/build/examples/seg/dumpRes.bin  \
 GLOG_logtostderr=1  $CAFFEROOT/build/examples/seg/createFinalRes.bin  \
     $SEGSCRDIR/data/locResult.txt \
     $SEGSCRDIR/data/seg_imgs \
+    $SEGSCRDIR/data/corpus \
     $SEGSCRDIR/data/final_segmentations
