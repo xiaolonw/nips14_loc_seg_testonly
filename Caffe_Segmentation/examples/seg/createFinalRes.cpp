@@ -1,5 +1,4 @@
 /*
- #define OUT_DIR "/exports/cyclops/work/001_Selfies/002_Segmentation/src/Caffe_Segmentation/results/backpage/ImagesNevada/segs/imgs"
  * createFinalRes.cpp
  *
  *  Created on: Dec 1, 2014
@@ -85,10 +84,11 @@ int main(int argc, char** argv) {
 		boost::filesystem::create_directory(dirname(strdup(fpath.c_str())));
 		imwrite(fpath, I);
 		I2 = imread(string(IMG_DIR) + "/" + fname);
+		I2 = I2 * 0.5; 
 		resize(I2, I2, Size(SZ_X, SZ_Y));
 		Mat channels[3];
 		split(I2, channels);
-		add(channels[2], I, channels[2]);
+		addWeighted(channels[2], 0.5, I, 1.0, 0.0, channels[2]);
 		merge(channels, 3, I2);
 		fpath = string(OUT_DIR) + "/" + fname + ".segmask.jpg";
 		imwrite(fpath, I2);

@@ -17,7 +17,6 @@
 #include <vector>
 #include <set>
 #include <algorithm>
-#include <sys/stat.h> // for mkdir
 #include <libgen.h> // for dirname
 #include <boost/filesystem.hpp>
 
