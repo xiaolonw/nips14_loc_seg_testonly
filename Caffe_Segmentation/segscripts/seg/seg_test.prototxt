@@ -1,12 +1,14 @@
 name: "3dup_1fc"
 layers {
   name: "data_55"
-  type: DATA
+  type: IMAGE_DATA
   top: "data_55"
   top: "label_seg"
-  data_param {
-    source: "data/seg_leveldb"
+  image_data_param {
+    source: "data/ImgsList_IDL_input.txt"
     batch_size: 2
+    new_height: 256
+    new_width: 256
   }
   transform_param {
     mean_file: "models/mean.binaryproto"

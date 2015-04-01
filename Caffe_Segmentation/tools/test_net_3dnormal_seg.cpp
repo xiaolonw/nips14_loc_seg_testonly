@@ -125,8 +125,6 @@ int main(int argc, char** argv)
 	caffe_test_net.CopyTrainedLayersFrom(trained_net_param);
 
 	vector<shared_ptr<Layer<float> > > layers = caffe_test_net.layers();
-	const DataLayer<float> *datalayer = dynamic_cast<const DataLayer<float>* >(layers[0].get());
-	CHECK(datalayer);
 
 	string labelFile(argv[3]);
 	int data_counts = 0;

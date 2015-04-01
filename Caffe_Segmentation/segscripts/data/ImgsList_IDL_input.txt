@@ -1,0 +1,2 @@
+data/corpus/1.jpg 1
+data/corpus/2.jpg 1
