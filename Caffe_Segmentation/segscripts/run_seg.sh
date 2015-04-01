@@ -5,9 +5,9 @@ fi
 export CAFFEROOT=$1
 export SEGSCRDIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
-echo 'Setting up data for localization'
-rm -rf $SEGSCRDIR/data/loc_leveldb
-bash loc/convert_loc_test.sh $SEGSCRDIR/data
+#echo 'Setting up data for localization'
+#rm -rf $SEGSCRDIR/data/loc_leveldb
+#bash loc/convert_loc_test.sh $SEGSCRDIR/data
 
 echo 'Running localization'
 bash loc/test_loc.sh

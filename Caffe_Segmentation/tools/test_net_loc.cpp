@@ -74,8 +74,6 @@ int main(int argc, char** argv)
     caffe_test_net.CopyTrainedLayersFrom(trained_net_param);
 
     vector<shared_ptr<Layer<float> > > layers = caffe_test_net.layers();
-    const DataLayer<float> *datalayer = dynamic_cast<const DataLayer<float>* >(layers[0].get());
-    CHECK(datalayer);
 
     string labelFile(argv[3]);
     int data_counts = 0;
@@ -97,7 +95,7 @@ int main(int argc, char** argv)
 
     file = fopen(labelFile.c_str(), "r");
 
-    Blob<float>* c1 = (*(caffe_test_net.bottom_vecs().rbegin()))[0];
+    boost::shared_ptr<Blob<float> > c1 = caffe_test_net.blob_by_name("data");
     int c2 = c1->num();
     int batchCount = std::ceil(data_counts / (floor)(c2));
 
@@ -109,7 +107,7 @@ int main(int argc, char** argv)
         LOG(INFO)<< "processing batch :" << batch_id+1 << "/" << batchCount <<"...";
 
         /* const vector<Blob<float>*>& result = */ caffe_test_net.Forward(dummy_blob_input_vec);
-        Blob<float>* bboxs = (*(caffe_test_net.bottom_vecs().rbegin()))[0];
+        boost::shared_ptr<Blob<float> > bboxs = caffe_test_net.blob_by_name("fc8_loc");
         int bsize = bboxs->num();
 
         //labels needed if you want  to do evaluations
