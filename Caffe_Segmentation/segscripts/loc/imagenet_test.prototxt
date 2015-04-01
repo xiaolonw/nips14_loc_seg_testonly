@@ -1,12 +1,14 @@
 name: "CaffeNet"
 layers {
   name: "data"
-  type: DATA
+  type: IMAGE_DATA
   top: "data"
   top: "label"
-  data_param {
-    source: "data/loc_leveldb"
+  image_data_param {
+    source: "data/ImgsList_IDL_input.txt"
     batch_size: 2
+    new_height: 256
+    new_width: 256
   }
   transform_param {
     mean_file: "models/mean.binaryproto"
@@ -295,15 +297,6 @@ layers {
     }
   }
 }
-
-layers {
-  name: "loss_loc"
-  type:   EUCLIDEAN_LOSS
-  bottom: "fc8_loc"
-  bottom: "label"
-}
-
-
 
 
 
