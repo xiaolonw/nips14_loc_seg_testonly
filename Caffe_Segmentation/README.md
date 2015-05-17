@@ -2,7 +2,8 @@ Deep Learning for Segmentation (Testing Code)
 ============================================
 
 Based on        
-**Xiaolong Wang**, Liliang Zhang, Liang Lin, Zhujin Liang, and Wangmeng Zuo. Joint Task Learning via Deep Neural Networks with Application to Generic Object Extraction. Proc. of Advances in Neural Information Processing Systems (NIPS), 2014
+**Xiaolong Wang**, Liliang Zhang, Liang Lin, Zhujin Liang, and Wangmeng Zuo. Deep Joint Task Learning for Generic Object
+Extraction. Proc. of Advances in Neural Information Processing Systems (NIPS), 2014
 
 Forked from [this](https://github.com/BVLC/caffe/tree/c18d22eb92488f02c0256a3fe4ac20a8ad827596) 
 commit of [Caffe](https://github.com/BVLC/caffe).
